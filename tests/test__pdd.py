@@ -125,12 +125,14 @@ def test_calculate_iv(mocker):
     vlimit = 1
     vstep = 0.2
     output_iv = 1
+    T_in = 350
 
     # We check all relevant functions are called when running in the dark.
-    out = calculate_iv(junction, vlimit, vstep, light_iv=False, output_iv=output_iv)
+    out = calculate_iv(junction, vlimit, vstep, light_iv=False, output_iv=output_iv,
+                       T=T_in)
     mock_eq.assert_called()
     mock_sc.assert_not_called()
-    mock_ddModel.runiv.assert_called_with(vlimit, vstep, output_iv, 0)
+    mock_ddModel.runiv.assert_called_with(vlimit, vstep, T_in, output_iv, 0)
     mock_bandstructure.assert_called()
     mock_dump_iv.assert_called()
     assert "Bandstructure" in out and "IV" in out
@@ -138,13 +140,15 @@ def test_calculate_iv(mocker):
     # And with illumination
     mock_eq.reset_mock()
     mock_sc.reset_mock()
-    out = calculate_iv(junction, vlimit, vstep, light_iv=True, output_iv=output_iv)
+    out = calculate_iv(junction, vlimit, vstep, light_iv=True, output_iv=output_iv,
+                       T=T_in)
     mock_eq.assert_not_called()
     mock_sc.assert_called()
 
     # And if the vlimit is negative, so it will be the step, internally
-    out = calculate_iv(junction, -vlimit, vstep, light_iv=True, output_iv=output_iv)
-    mock_ddModel.runiv.assert_called_with(-vlimit, -vstep, output_iv, 0)
+    out = calculate_iv(junction, -vlimit, vstep, light_iv=True, output_iv=output_iv,
+                       T=T_in)
+    mock_ddModel.runiv.assert_called_with(-vlimit, -vstep, T_in, output_iv, 0)
 
 
 def test_find_minimum_bandgap():
