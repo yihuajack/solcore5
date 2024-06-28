@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         os: [ubuntu-latest, macos-13, windows-latest, macos-14]
+         os: [ubuntu-latest, macos-12, windows-latest, macos-latest]
          python-version: ["3.9", "3.10", "3.11", "3.12"]
          exclude:
            - os: macos-14
@@ -46,21 +46,23 @@ jobs:
           sudo apt-get update
           sudo apt install -y gfortran ngspice python3-tk libboost-all-dev libopenblas-dev libfftw3-dev libsuitesparse-dev
 
-      - name: Install system dependencies in MacOS
-        if: >-
-          ( contains(matrix.os, 'macos') )
+      - name: Install system dependencies in MacOS (ARM)
+        if: matrix.os == 'macos-latest'
         run: |
-          brew reinstall gfortran
-          brew install ngspice
+           brew reinstall gfortran openblas pkg-config 
+           brew install ngspice boost suite-sparse
 
-      # brew reinstall gfortran openblas pkg-config # only relevant if installing S4
-      # brew install ngspice boost suite-sparse # only relevant if installing S4
+      - name: Install system dependencies in MacOS (Intel)
+        if: matrix.os == 'macos-12'
+        run: |
+           brew reinstall gfortran
+           brew install ngspice 
 
       - name: Install system dependencies in Windows
         if: matrix.os == 'windows-latest'
         run: choco install ngspice
 
-      - name: Install Python dependecies
+      - name: Install Python dependencies
         run: |
           pip install --upgrade pip
           
@@ -69,27 +71,16 @@ jobs:
           
           python3 -m spin install-dependencies -test-dep
 
-      # - name: Install S4 (macOS - x86)
-      #   if: matrix.os == 'macos-13'
-      #   run: |
-      #     pip install wheel setuptools
-      #     git clone https://github.com/phoebe-p/S4
-      #     cd S4
-      #     make S4_pyext --file="Makefile.mac_intel"
-      #     cd ..
-      #     rm -rf S4
-
-# No longer working on GitHub Actions as of June 2024 (or possibly earlier). Boost header files not found.
-      # This issue cannot be replicated locally on M1 mac.
-#      - name: Install S4 (macOS - arm)
-#        if: matrix.os == 'macos-14'
-#        run: |
-#          pip install wheel setuptools
-#          git clone https://github.com/phoebe-p/S4
-#          cd S4
-#          make S4_pyext --file="Makefile.m1"
-#          cd ..
-#          rm -rf S4
+      - name: Install S4 (macOS - arm)
+        if: matrix.os == 'macos-latest'
+        run: |
+          pip install wheel setuptools
+          git clone https://github.com/phoebe-p/S4
+          cd S4
+          git checkout rename_interpolator
+          make S4_pyext --file="Makefile.m1"
+          cd ..
+          rm -rf S4
 
       - name: Install S4 (ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -132,7 +123,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-         os: [ubuntu-latest, macos-13, windows-latest, macos-14]
+         os: [ubuntu-latest, macos-12, windows-latest, macos-latest]
          python-version: ["3.9", "3.10", "3.11", "3.12"]
          exclude:
            - os: macos-14
@@ -161,12 +152,17 @@ jobs:
           sudo apt-get update
           sudo apt install -y gfortran ngspice python3-tk libboost-all-dev libopenblas-dev libfftw3-dev libsuitesparse-dev
 
-      - name: Install system dependencies in MacOS
-        if: >-
-          ( contains(matrix.os, 'macos') )
+      - name: Install system dependencies in MacOS (ARM)
+        if: matrix.os == 'macos-latest'
         run: |
-          brew reinstall gfortran openblas pkg-config
-          brew install ngspice boost suite-sparse
+           brew reinstall gfortran openblas pkg-config 
+           brew install ngspice boost suite-sparse
+
+      - name: Install system dependencies in MacOS (Intel)
+        if: matrix.os == 'macos-12'
+        run: |
+           brew reinstall gfortran
+           brew install ngspice 
 
       - name: Install system dependencies in Windows
         if: matrix.os == 'windows-latest'
@@ -181,26 +177,16 @@ jobs:
           
           python3 -m spin install-dependencies -test-dep
 
-      # - name: Install S4 (macOS - x86)
-      #   if: if: matrix.os == 'macos-13'
-      #   run: |
-      #     pip install wheel setuptools
-      #     git clone https://github.com/phoebe-p/S4
-      #     cd S4
-      #     make S4_pyext --file="Makefile.mac_intel"
-      #     cd ..
-      #     rm -rf S4
-
-#      - name: Install S4 (macOS - arm)
-#        if: matrix.os == 'macos-14'
-#        run: |
-#          pip install wheel setuptools
-#          git clone https://github.com/phoebe-p/S4
-#          cd S4
-#          make S4_pyext --file="Makefile.m1"
-#          cd ..
-#          rm -rf S4
-
+      - name: Install S4 (macOS - arm)
+        if: matrix.os == 'macos-14'
+        run: |
+          pip install wheel setuptools
+          git clone https://github.com/phoebe-p/S4
+          cd S4
+          make S4_pyext --file="Makefile.m1"
+          cd ..
+          rm -rf S4
+          
       - name: Install S4 (ubuntu)
         if: matrix.os == 'ubuntu-latest'
         run: |
