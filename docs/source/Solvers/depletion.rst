@@ -3,6 +3,50 @@ Depletion approximation
 
 - Example: :doc:`Traditional GaInP/InGaAs/Ge solar cell <../Examples/example_3J_with_DA_solver>`
 
+Material and device parameters
+---------------------------------
+
+The table below lists the device and material parameters required for the depletion approximation solver. It is not
+necessary to set all these parameters explicitly, as some can be calculated from other parameters or have default values.
+However, there is no reason to assume the default values are reasonable for your material/device!
+
+========================== ============================ ============================= ========== ======== =============================================
+Parameter                  Set location                 Solcore label                 Units      Default  Calculable?
+========================== ============================ ============================= ========== ======== =============================================
+n-type region SRV          ``Junction``                 ``sn`` :sup:`[1]`             m s-1      0        No
+p-type region SRV          ``Junction``                 ``sp`` :sup:`[1]`             m s-1      0        No
+Permittivity	           ``Junction`` or ``material`` ``permittivity``              F m-1      none     Yes, from ``relative_permittivity`` :sup:`[2]`
+Electron diffusion length  p-type ``material``          ``electron_diffusion_length`` m          none     No
+Hole diffusion length      or n-type ``material``       ``hole_diffusion_length``     m          none     No
+Electron mobility          p-type ``material``          ``electron_mobility``         m2 V-1 s-1 0.94     No :sup:`[3]`
+Hole mobility              n-type ``material``          ``hole_mobility``             m2 V-1 s-1 0.05     No :sup:`[3]`
+Intrinsic carrier density  ``material``                 ``ni``                        m-3        none     Yes, from ``Nc``, ``Nv`` and ``band_gap`` :sup:`[4]`
+Donor (n-type) density     n-type ``material``          ``Nd``                        m-3        1        No
+Acceptor (p-type) density  p-type ``material``          ``Na``                        m-3        1        No
+Built-in voltage           ``Junction`` (optional)      ``Vbi``                       V          none     Yes, from ``Nd``, ``Na`` and ``ni`` :sup:`[5]`
+Shunt resistance           ``Junction`` (optional)      ``R_shunt``                   Ohm m2     1e14     No :sup:`[6]`
+========================== ============================ ============================= ========== ======== =============================================
+
+Notes:
+
+1. The n/p labels for the surface recombination velocities ``sn`` and ``sp`` refer to the region, not the carrier type,
+   e.g. ``sn`` is the recombination velocity at
+   the n-type surface, which can be the front or rear surface depending on the cell configuration.
+2. ``relative_permittivity`` is a dimensionless quantity: permittivity = vacuum permittivity * relative permittivity
+3. If the material is not in the :doc:`mobility model database <../Systems/Materials>`, which calculates the mobility
+   based on the alloy composition (if applicable), temperature, and doping level, the model will default to calculating
+   the mobility for GaAs. Thus if you are using a custom  material not included in the mobility database, you should set
+   this explicitly, since there is no reason to assume the GaAs values are reasonable for your material.
+4. The intrinsic carrier density ``ni`` can be calculated from the conduction and valence band effective density of states
+   (``Nc`` and ``Nv`` respectively, units m-3) and ``band_gap`` (SI units used by Solcore: J, NOT eV!).
+5. In general, you don't need to set the built-in voltage ``Vbi`` since it is calculated from ``Nd``, ``Na`` and ``ni``,
+   all of which are already required.
+6. An ideal cell has infinitely high shunt resistance (hence the extremely high default value).
+
+
+Background
+----------
+
 The depletion approximation provides an analytical - or semi-analytical
 - solution to the Poisson-drift-diffusion equations described in the
 previous section applied to simple PN homojunction solar cells.
