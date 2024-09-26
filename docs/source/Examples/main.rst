@@ -1,7 +1,8 @@
 Examples
 ========
 
-List of examples illustrating the use of Solcore. More examples are available in the `Solcore's Github repository (Examples folder) <https://github.com/dalonsoa/solcore5>`_ and will be listed here at some point
+List of examples illustrating the use of Solcore. More examples are available in the `Solcore's Github repository (Examples folder) <https://github.com/qpv-research-group/solcore5>`_,
+and on the `solcore-education website <https://qpv-research-group.github.io/solcore-education/solcore-workshop-2/workshop2023.html>`_.
 
 Quantum solvers
 ---------------
@@ -42,4 +43,5 @@ SPICE-based solar cell solver
 
 - :doc:`PV module calculator <example_pv_module>`
 - :doc:`Quasi-3D 3J solar cell <example_quasi3D_cell>`
+
 

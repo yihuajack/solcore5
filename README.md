@@ -5,10 +5,9 @@
 [![image](https://zenodo.org/badge/DOI/10.5281/zenodo.1185316.svg)](https://doi.org/10.5281/zenodo.1185316)
 [![image](https://img.shields.io/badge/License-LGPLv3-blue.svg)](http://www.gnu.org/licenses/lgpl.html)
 [![Documentation Status](http://readthedocs.org/projects/solcore5/badge/?version=latest)](http://solcore5.readthedocs.io/en/latest/?badge=latest)
-![Solcore](https://github.com/qpv-research-group/solcore5/workflows/Solcore/badge.svg)
+![Solcore](https://github.com/qpv-research-group/solcore5/actions/workflows/test_unit_and_examples.yml/badge.svg)
 [![codecov](https://codecov.io/gh/qpv-research-group/solcore5/branch/develop/graph/badge.svg)](https://codecov.io/gh/qpv-research-group/solcore5)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a1d2e6f702e64d878a67dcf85ce9b3b7)](https://app.codacy.com/gh/qpv-research-group/solcore5?utm_source=github.com&utm_medium=referral&utm_content=qpv-research-group/solcore5&utm_campaign=Badge_Grade_Settings)
-
 
 Solcore
 =======
@@ -16,6 +15,9 @@ Solcore
 **Solcore** was born as a modular set of tools, written (almost) entirely in Python 3, to address some of the task we had to solve more. With time, however, it has evolved as a complete semiconductor solver able of modelling the optical and electrical properties of a wide range of solar cells, from quantum well devices to multi-junction solar cells.
 
 Please, visit [Solcore\'s Documentation](http://docs.solcore.solar), the [Tutorial](docs/source/Examples/tutorial.rst) for a step-by-step example of how to use *Solcore* to model a solar cell and also check the [Examples folder](examples) for more specific information and examples of usage.
+ 
+If you would like to be kept up to date on (important) releases and new features, please join the Solcore/RayFlare mailing list 
+[here](https://www.solcore.solar/mailing-list).
 
 ![](docs/source/Infographics.jpg)
 
