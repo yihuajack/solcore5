@@ -4,3 +4,13 @@
 
 [TiO2]
 
+[NiOx]
+
+[MAPbI3]
+
+[C60]
+
+[PEDOT]
+
+[PCBM]
+
